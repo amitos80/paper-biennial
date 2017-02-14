@@ -4,13 +4,15 @@ import netP5.*;
 
 OscP5 oscP5;
 NetAddress resol;
+OscBundle myBundle;
+OscMessage myMessage;
+
 int lastCoinTs = 0;
 
 Serial myPort;  // Create object from Serial class
 String val;      // Data received from the serial port
 
-void setup() 
-{
+void setup() {
   size(200, 200);
   String portName = Serial.list()[1];
   String[] list = Serial.list();
@@ -19,8 +21,10 @@ void setup()
   }
   myPort = new Serial(this, portName, 9600);
   
-  oscP5 = new OscP5(this, 12000);
+  oscP5 = new OscP5(this, 7001);
   resol = new NetAddress("127.0.0.1", 7000);
+  myBundle = new OscBundle();
+  myMessage = new OscMessage("/");  
 }
 
 void draw() {
@@ -33,9 +37,7 @@ void draw() {
         if (integerValue == 1) {
            if (millis() - lastCoinTs > 1000) {
             println("ONE");
-            background(random(255), random(255), random(255));
-            //oscP5.send(new OscMessage("LOOP_B"), resol);
-            //oscP5.send(new OscMessage("/composition/video/scale/values").add(random(0, 1)), resol);
+            //sendOscMessage(...)
             lastCoinTs = millis();
            }
        } else {
@@ -49,6 +51,23 @@ void draw() {
   }
   
   val = "";
+}
+
+void sendOscMessage(String pattern, int value) {
+  // pattern example "/layer3/clip2/connect"
+  myMessage.setAddrPattern(pattern);
+  // value 0, 1
+  myMessage.add(value);
+  myBundle.add(myMessage);
+  myMessage.clear();
+  oscP5.send(myBundle, resol);
+}
+
+void oscEvent(OscMessage theOscMessage) {
+  /* print the address pattern and the typetag of the received OscMessage */
+  print("*** received an osc message.");
+  print("*** addrpattern: "+theOscMessage.addrPattern());
+  println("*** typetag: "+theOscMessage.typetag());
 }
 
 String readStringFromSerial () {
