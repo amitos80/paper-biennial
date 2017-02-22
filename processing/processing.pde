@@ -29,20 +29,21 @@ void setup() {
 
 void draw() {
   if ( myPort.available() > 0) {  // If data is available,
-    val = myPort.readString();
-    
+    val = myPort.readString().trim();
+    println("READ = " + val);
     int integerValue = -1;
     try {
         integerValue = Integer.valueOf(val);
+        println("INT = " + integerValue);
         if (integerValue == 1) {
            if (millis() - lastCoinTs > 1000) {
-            println("ONE");
+            //println("ONE");
             //sendOscMessage(...)
             lastCoinTs = millis();
            }
        } else {
          // take snapshot
-         println(val);
+         //println(val);
        }  
       
     }catch(Exception e) {
