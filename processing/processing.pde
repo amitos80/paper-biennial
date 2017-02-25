@@ -56,20 +56,20 @@ void setup() {
 
 void draw() {
   if ( myPort.available() > 0) {  // If data is available,
-    val = myPort.readString().trim();
-    //println("READ = " + val);
+    val = myPort.readStringUntil('\n');
+    println("READ = " + val);
     int integerValue = -1;
     try {
-        integerValue = Integer.valueOf(val);
-        //println("INT = " + integerValue);
-        if (integerValue == 1) {
-           println("INT = " + integerValue);
+        if (val.indexOf("C") != -1) {
            if (millis() - lastCoinTs > 2000) {
             lastCoinTs = millis();
             state = STATE_LOOP_B;
             playLoop('B');
            }
-       } else {
+       } else if ((val.indexOf("D") != -1)){
+         val = val.replace("D", "");
+         integerValue = Integer.valueOf(val);
+         println("INT = " + integerValue);
          if (state != STATE_LOOP_A) {
            
          }

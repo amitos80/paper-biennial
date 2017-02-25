@@ -28,7 +28,8 @@ void loop() {
   d = sharp.getDistance();
   if (d >= 20 && d <= 200) {
     if (abs(d - previousDistance) > 10) {
-      Serial.println("D" + d);  
+      Serial.print("D");  
+      Serial.println(d);  
     }
     
     previousDistance = d;
