@@ -69,12 +69,12 @@ void draw() {
        } else if ((val.indexOf("D") != -1)){
          val = val.replace("D", "");
          integerValue = Integer.valueOf(val);
-         println("INT = " + integerValue);
-         if (state != STATE_LOOP_A) {
-           
+         //println("INT = " + integerValue);
+         if (state != STATE_LOOP_A && integerValue > 100) {
+           state = STATE_LOOP_A;
+           playLoop('A');
          }
        }  
-      
     }catch(Exception e) {
       
     }
@@ -115,9 +115,9 @@ void playLoop(char loop) {
   }
 }
 
-void checkFirstVideo(boolean start) {
-  if ((millis() - initTs) / 1000 < 600 && state == STATE_LOOP_A || start) {
-    if ((millis() - firstVideoStart) / 1000 >= 120 || start) {
+void checkFirstVideo(boolean forceStart) {
+  if ((millis() - initTs) / 1000 < 600 && state == STATE_LOOP_A || forceStart) {
+    if ((millis() - firstVideoStart) / 1000 >= 120 || forceStart) {
       firstVideoStart = millis();
       playLoop('A');
     }
@@ -144,12 +144,4 @@ void oscEvent(OscMessage theOscMessage) {
   print("*** received an osc message.");
   print("*** addrpattern: "+theOscMessage.addrPattern());
   println("*** typetag: "+theOscMessage.typetag());
-}
-
-String readStringFromSerial () {
-  String res = new String();
-   while (myPort.available() > 0) {
-     res.concat(myPort.readString());
-  }
-  return res;
 }
