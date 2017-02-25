@@ -17,9 +17,9 @@ void setup() {
 }
 
 void checkCoins() {
-  while (coinsCount > 0) {  
-    coinsCount--;
-    Serial.println(1);
+  if (coinsCount > 0) {  
+    coinsCount = 0;
+    Serial.println("C");
     delay(20);
   }
 }
@@ -28,7 +28,7 @@ void loop() {
   d = sharp.getDistance();
   if (d >= 20 && d <= 200) {
     if (abs(d - previousDistance) > 10) {
-      Serial.println(d);  
+      Serial.println("D" + d);  
     }
     
     previousDistance = d;
@@ -36,9 +36,9 @@ void loop() {
   
   
   checkCoins();
-  delay(50);
+  //delay(50);
 }
 
 void acceptorCount() {
-  coinsCount++;
+  coinsCount = 1;
 }
