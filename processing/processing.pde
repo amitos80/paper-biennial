@@ -117,7 +117,7 @@ void playLoop(char loop) {
 
 void checkFirstVideo(boolean forceStart) {
   if ((millis() - initTs) / 1000 < 600 && state == STATE_LOOP_A || forceStart) {
-    if ((millis() - firstVideoStart) / 1000 >= 120 || forceStart) {
+    if ((millis() - firstVideoStart) / 1000 >= 150 || forceStart) {
       firstVideoStart = millis();
       playLoop('A');
     }
