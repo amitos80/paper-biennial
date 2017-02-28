@@ -44,14 +44,14 @@ void setup() {
   myPort = new Serial(this, portName, 9600);
   
   oscP5 = new OscP5(this, 7001);
-  resol = new NetAddress("127.0.0.1", 7000);
   slave = new NetAddress("10.0.0.6", 7000);
+  resol = new NetAddress("127.0.0.1", 7000);
   myBundle = new OscBundle();
   myMessage = new OscMessage("/");  
   firstVideoStart = millis();
   initTs = millis();
   
-  checkFirstVideo(true);
+ // checkFirstVideo(true);
 }
 
 void draw() {
@@ -117,7 +117,7 @@ void playLoop(char loop) {
 
 void checkFirstVideo(boolean forceStart) {
   if ((millis() - initTs) / 1000 < 600 && state == STATE_LOOP_A || forceStart) {
-    if ((millis() - firstVideoStart) / 1000 >= 150 || forceStart) {
+    if ((millis() - firstVideoStart) / 1000 >= 130 || forceStart) {
       firstVideoStart = millis();
       playLoop('A');
     }
@@ -131,8 +131,8 @@ void sendOscMessage(String pattern, int value) {
     myMessage.add(value);
     myBundle.add(myMessage);
     myMessage.clear();
-    oscP5.send(myBundle, slave);
     oscP5.send(myBundle, resol);
+    oscP5.send(myBundle, slave);
     myBundle.clear();
   } catch(Exception e){
     print("#@#@#@#@#@# EXCEPTION " + e.getMessage());
