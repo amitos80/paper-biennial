@@ -32,6 +32,10 @@ int initTs = 0;
 
 int loopBTS = 0;
 int loopCTS = 0;
+int distanceTS = -1;
+
+int distanceSum = 0;
+int distanceCounter = 0;
 
 void setup() {
   size(200, 200);
@@ -57,26 +61,40 @@ void setup() {
 void draw() {
   if ( myPort.available() > 0) {  // If data is available,
     val = myPort.readStringUntil('\n');
-    println("READ = " + val);
+  //  println("READ = " + val);
     int integerValue = -1;
     try {
         if (val.indexOf("C") != -1) {
+            println("$$$$$$ COIN");
            if (millis() - lastCoinTs > 2000) {
             lastCoinTs = millis();
             state = STATE_LOOP_B;
             playLoop('B');
            }
        } else if ((val.indexOf("D") != -1)){
-         val = val.replace("D", "");
+         val = val.replace("D", "").trim();
          integerValue = Integer.valueOf(val);
          //println("INT = " + integerValue);
-         if (state != STATE_LOOP_A && integerValue > 100) {
-           state = STATE_LOOP_A;
-           playLoop('A');
+         if (distanceCounter >= 20 && state != STATE_LOOP_A) {
+           int avarage = distanceSum / distanceCounter;
+           println("avarage = " + avarage);
+           if (avarage > 75) {
+             state = STATE_LOOP_A;
+             playLoop('A');
+             println("USER LEFT");
+           }
+           distanceSum = distanceCounter = 0;
+         } else if (state == STATE_LOOP_A) {
+           distanceSum = 0;
+           distanceCounter = 0;
+         } else {
+           distanceSum += integerValue;
+           distanceCounter++;
          }
+         println("distanceCounter = " + distanceCounter);
        }  
     }catch(Exception e) {
-      
+      println("ERROR " + e.getMessage());
     }
   }
   

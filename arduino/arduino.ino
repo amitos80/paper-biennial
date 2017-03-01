@@ -37,7 +37,7 @@ void loop() {
   
   
   checkCoins();
-  //delay(50);
+  delay(100);
 }
 
 void acceptorCount() {
