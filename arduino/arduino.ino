@@ -13,7 +13,7 @@ int previousDistance = 0;
 
 void setup() {
   Serial.begin(9600);
-  attachInterrupt(0, acceptorCount, RISING); //Digital interrupt pin 2
+  attachInterrupt(2, acceptorCount, CHANGE); //Digital interrupt pin 2
 }
 
 void checkCoins() {
@@ -25,19 +25,19 @@ void checkCoins() {
 }
 
 void loop() {
-  d = sharp.getDistance();
-  if (d >= 20 && d <= 200) {
-    if (abs(d - previousDistance) > 10) {
-      Serial.print("D");  
-      Serial.println(d);  
-    }
-    
-    previousDistance = d;
-  }
+//  d = sharp.getDistance();
+//  if (d >= 20 && d <= 200) {
+//    if (abs(d - previousDistance) > 10) {
+//      Serial.print("D");  
+//      Serial.println(d);  
+//    }
+//    
+//    previousDistance = d;
+//  }
   
   
   checkCoins();
-  delay(100);
+//  delay(20);
 }
 
 void acceptorCount() {
